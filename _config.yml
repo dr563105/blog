@@ -7,7 +7,7 @@
 # https://learnxinyminutes.com/docs/yaml/
 
 title: A Data Science blog
-tag: A blog site dedicated to exploring data science concepts ranging from setup to deployment of models, powered by fastpages.
+tag: A blog site dedicated to exploring data science concepts ranging from setup to deployment of models, powered by ![fastpages](https://github.com/fastai/fastpages)
 description: A blog site dedicated to exploring data science concepts ranging from setup to deployment of models, powered by fastpages.
 github_username: dr563105
 # you can comment the below line out if your repo name is not different than your baseurl
