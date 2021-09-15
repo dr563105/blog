@@ -6,9 +6,10 @@
 # https://learn-the-web.algonquindesign.ca/topics/markdown-yaml-cheat-sheet/#yaml
 # https://learnxinyminutes.com/docs/yaml/
 
-title: A Data Science blog
-tag: A blog site dedicated to exploring data science concepts ranging from setup to deployment of models, powered by ![fastpages](https://github.com/fastai/fastpages)
-description: A blog site dedicated to exploring data science concepts ranging from setup to deployment of models, powered by fastpages.
+title: "Deepak Ramani"
+tag: "A Data Science blog"
+tag1: "Data Science | AI | Deep Learning | Robotics"
+description: "A blog site dedicated to exploring data science concepts ranging from setup to deployment of models, powered by fastpages."
 github_username: dr563105
 # you can comment the below line out if your repo name is not different than your baseurl
 github_repo: "blog"
@@ -42,6 +43,8 @@ minima:
   social_links:
     twitter: thosegradients
     github: dr563105
+    stackoverflow: "13539744"
+    linkedin: deepakr05
 
 # Set this to true to get LaTeX math equation support
 use_math: 
@@ -59,7 +62,7 @@ annotations: false
 show_tags: true
 
 # Add your Google Analytics ID here if you have one and want to use it
-google_analytics: 
+google_analytics: UA-207674206-1
 
 exclude:
   - docker-compose.yml
@@ -95,7 +98,15 @@ plugins:
   - jekyll-paginate
   - jekyll-sitemap
   - jemoji
+  - jekyll-scholar
 
+scholar:
+  style: custom
+  source: _bibliography
+  bibliography_list_tag: p
+  bibliography_item_tag: p
+  bibtex_filters:
+    - latex
 # See https://jekyllrb.com/docs/pagination/
 # For pagination to work, you cannot have index.md at the root of your repo, instead you must rename this file to index.html
 paginate: 15
