@@ -7,10 +7,10 @@
 # https://learnxinyminutes.com/docs/yaml/
 
 title: "Deepak Ramani"
-tag: "A Data Science blog"
-tag1: "Data Science | AI | Deep Learning | Robotics"
-description: "A blog site dedicated to exploring data science concepts ranging from setup to deployment of models, powered by fastpages."
+tag: "Data Science | AI | Deep Learning | Robotics"
+description: "A Data Science Blog"
 github_username: dr563105
+#A blog site dedicated to exploring data science concepts ranging from setup to deployment of models, powered by fastpages.
 # you can comment the below line out if your repo name is not different than your baseurl
 github_repo: "blog"
 
@@ -47,13 +47,13 @@ minima:
     linkedin: deepakr05
 
 # Set this to true to get LaTeX math equation support
-use_math: 
+use_math: true 
 
 # Set this to true to display the summary of your blog post under your title on the Home page.
 show_description: true
 
 # Set this to true to display image previews on home page, if they exist
-show_image: false
+show_image: true
 
 # Set this to true to turn on annotations with hypothes.is (https://web.hypothes.is/)
 annotations: false
@@ -76,7 +76,7 @@ include:
 # This specifies what badges are turned on by default for notebook posts.
 default_badges:
   github: true
-  binder: true
+  binder: false
   colab: true
 
 # Escape HTML in post descriptions
@@ -107,6 +107,7 @@ scholar:
   bibliography_item_tag: p
   bibtex_filters:
     - latex
+
 # See https://jekyllrb.com/docs/pagination/
 # For pagination to work, you cannot have index.md at the root of your repo, instead you must rename this file to index.html
 paginate: 15
