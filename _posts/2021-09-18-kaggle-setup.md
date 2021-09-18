@@ -1,10 +1,11 @@
 ---
-toc: false
+toc: true
 layout: post
 comments: true
 image: images/kaggle-logo.png
+permalink: /kaggle-setup/
 description: A guide to setup Kaggle API on Linux/Mac.
-categories: [kaggle]
+categories: [kaggle, markdown]
 title: Setting up Kaggle on Linux/Mac
 ---
 
