@@ -26,8 +26,8 @@ negative. Perhaps because of my upbringing, I enjoy working in a team that share
 ideologies and mentality to achieve goals with perfection.
 
 I'm interested in bringing the power of machine learning to fields such as sports and see
-how much impact it could have. I like to analyse *event data* from soccer and make my own
-derivation on the performance of a team and players.
+how much impact it could have. Presently, I analyse *event data* from soccer after weekend matches.
+I hope to publish a few here as posts in the next weeks.
 
 At the moment I'm learning about *tracking data* and participating in the [NFL Health &
 Safety](https://www.kaggle.com/c/nfl-health-and-safety-helmet-assignment/overview) kaggle competition.
