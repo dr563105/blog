@@ -1,0 +1,2857 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Using json_normalize function | Deepak Ramani</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Using json_normalize function" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A short tutorial with examples on flattening JSON object using json_normalize pandas function" />
+<meta property="og:description" content="A short tutorial with examples on flattening JSON object using json_normalize pandas function" />
+<link rel="canonical" href="https://dr563105.github.io/blog/pandas/json/jupyter/2021/09/24/using-json-normalize.html" />
+<meta property="og:url" content="https://dr563105.github.io/blog/pandas/json/jupyter/2021/09/24/using-json-normalize.html" />
+<meta property="og:site_name" content="Deepak Ramani" />
+<meta property="og:image" content="https://dr563105.github.io/blog/images/pandas-logo.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-09-24T00:00:00-05:00" />
+<script type="application/ld+json">
+{"url":"https://dr563105.github.io/blog/pandas/json/jupyter/2021/09/24/using-json-normalize.html","@type":"BlogPosting","headline":"Using json_normalize function","dateModified":"2021-09-24T00:00:00-05:00","datePublished":"2021-09-24T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://dr563105.github.io/blog/pandas/json/jupyter/2021/09/24/using-json-normalize.html"},"image":"https://dr563105.github.io/blog/images/pandas-logo.png","description":"A short tutorial with examples on flattening JSON object using json_normalize pandas function","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://dr563105.github.io/blog/feed.xml" title="Deepak Ramani" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-207674206-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-207674206-1');
+</script>
+
+
+<link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/blog/">Deepak Ramani</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.16,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+          <div class="trigger">
+            <a class="page-link" href="https://github.com/dr563105/blog"><svg class="octicon octicon-mark-github octicon octicon-mark-github octicon octicon-mark-github" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg></a><a class="page-link" href="/blog/about-me/">About Deepak</a><a class="page-link" href="/blog/search/">Search</a><a class="page-link" href="/blog/categories/">Tags</a></div>
+        </nav></div>
+  </header>5
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Using json_normalize function</h1><p class="page-description">A short tutorial with examples on flattening JSON object using json_normalize pandas function</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-09-24T00:00:00-05:00" itemprop="datePublished">
+        Sep 24, 2021
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      13 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/blog/categories/#pandas">pandas</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#json">json</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#jupyter">jupyter</a>
+        
+      
+      </p>
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/dr563105/blog/tree/master/_notebooks/2021-09-24-using-json-normalize.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/blog/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/dr563105/blog/blob/master/_notebooks/2021-09-24-using-json-normalize.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/blog/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2021-09-24-using-json-normalize.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>J</strong>ava<strong>s</strong>cript <strong>O</strong>bject <strong>N</strong>otation(JSON) is a widely used format for storing and exchanging data. Coming from the relational database, NoSQL use JSON to store data. And similarly REST API's response. JSON is also used in storing football event data. It allows easy addition of features in the future.</p>
+<p>Though JSON format allows for easier exchange of data, for analysis, a tabular form would be appropriate. A JSON structure can be of two forms: a JSON object and list of JSON objects. Since our programming language of choice is Python, those structures can be somewhat called as a dictionary object or list of dicts.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="/blog/images/copied_from_nb/my_icons/jsonobjectimage.png" alt="" title="source: B. Chen, https://towardsdatascience.com/all-pandas-json-normalize-you-should-know-for-flattening-json-13eae1dfb7dd" /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Importing-pandas-library">Importing pandas library<a class="anchor-link" href="#Importing-pandas-library"> </a></h3>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="1.-Flattening-a-simple-JSON">1. Flattening a simple JSON<a class="anchor-link" href="#1.-Flattening-a-simple-JSON"> </a></h2><h3 id="A-dict">A dict<a class="anchor-link" href="#A-dict"> </a></h3><p>Let us consider a simple dictionary: 3 keys and their respective values.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">viv</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;player_id&quot;</span> <span class="p">:</span> <span class="mi">15623</span><span class="p">,</span> 
+    <span class="s2">&quot;player_name&quot;</span> <span class="p">:</span> <span class="s2">&quot;Vivianne Miedema&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;jersey_number&quot;</span> <span class="p">:</span> <span class="mi">11</span><span class="p">}</span>
+<span class="n">viv</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>{&#39;player_id&#39;: 15623, &#39;player_name&#39;: &#39;Vivianne Miedema&#39;, &#39;jersey_number&#39;: 11}</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We use the <code>json_normalize</code> API to flatten a JSON dict.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">json_normalize</span><span class="p">(</span><span class="n">viv</span><span class="p">);</span><span class="n">df</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>player_id</th>
+      <th>player_name</th>
+      <th>jersey_number</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>15623</td>
+      <td>Vivianne Miedema</td>
+      <td>11</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 1 entries, 0 to 0
+Data columns (total 3 columns):
+ #   Column         Non-Null Count  Dtype 
+---  ------         --------------  ----- 
+ 0   player_id      1 non-null      int64 
+ 1   player_name    1 non-null      object
+ 2   jersey_number  1 non-null      int64 
+dtypes: int64(2), object(1)
+memory usage: 152.0+ bytes
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<blockquote><p><strong>Side Note</strong>:If the data contains something that is not compatible with python, in this case a <code>null</code> variable, there are two choices:</p>
+<ul>
+<li>Change <code>null</code> to <code>None</code></li>
+<li>Pass the data through <code>json.loads</code> function</li>
+</ul>
+</blockquote>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Change <code>null</code> to <code>None</code></strong></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">null</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">viv1</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;player_id&quot;</span> <span class="p">:</span> <span class="mi">15623</span><span class="p">,</span> <span class="s2">&quot;player_name&quot;</span> <span class="p">:</span> <span class="s2">&quot;Vivianne Miedema&quot;</span><span class="p">,</span> <span class="s2">&quot;jersey_number&quot;</span> <span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="s2">&quot;player_nickname&quot;</span> <span class="p">:</span> <span class="n">null</span><span class="p">}</span>
+<span class="n">viv1</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>{&#39;player_id&#39;: 15623,
+ &#39;player_name&#39;: &#39;Vivianne Miedema&#39;,
+ &#39;jersey_number&#39;: 11,
+ &#39;player_nickname&#39;: None}</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Make data as string and pass to <code>json.loads</code></strong></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="n">viv1</span> <span class="o">=</span> <span class="s1">&#39;{ &quot;player_id&quot; : 15623, &quot;player_name&quot; : &quot;Vivianne Miedema&quot;, &quot;jersey_number&quot; : 11, &quot;player_nickname&quot; : null}&#39;</span>
+<span class="n">viv1</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">viv1</span><span class="p">)</span>
+<span class="n">viv1</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>{&#39;player_id&#39;: 15623,
+ &#39;player_name&#39;: &#39;Vivianne Miedema&#39;,
+ &#39;jersey_number&#39;: 11,
+ &#39;player_nickname&#39;: None}</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="A-list-of-dicts">A list of dicts<a class="anchor-link" href="#A-list-of-dicts"> </a></h3>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">player_list</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span> <span class="s2">&quot;player_id&quot;</span> <span class="p">:</span> <span class="mi">15623</span><span class="p">,</span> <span class="s2">&quot;player_name&quot;</span> <span class="p">:</span> <span class="s2">&quot;Vivianne Miedema&quot;</span><span class="p">,</span> <span class="s2">&quot;jersey_number&quot;</span> <span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="s2">&quot;player_nickname&quot;</span> <span class="p">:</span> <span class="n">null</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="s2">&quot;player_id&quot;</span> <span class="p">:</span> <span class="mi">10658</span><span class="p">,</span> <span class="s2">&quot;player_name&quot;</span> <span class="p">:</span> <span class="s2">&quot;Danielle van de Donk&quot;</span><span class="p">,</span> <span class="s2">&quot;jersey_number&quot;</span> <span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s2">&quot;player_nickname&quot;</span> <span class="p">:</span> <span class="n">null</span> <span class="p">}</span>
+<span class="p">]</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">json_normalize</span><span class="p">(</span><span class="n">player_list</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>player_id</th>
+      <th>player_name</th>
+      <th>jersey_number</th>
+      <th>player_nickname</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>15623</td>
+      <td>Vivianne Miedema</td>
+      <td>11</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>10658</td>
+      <td>Danielle van de Donk</td>
+      <td>7</td>
+      <td>None</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We have the JSON list of dicts in a tabular form. All the keys become columns and their values as entries.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>When we flattern a list with a key-value pair missing for an entry, instead of an error, <strong>NaN</strong>(not a number) is stored.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">player_list</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span> <span class="s2">&quot;player_id&quot;</span> <span class="p">:</span> <span class="mi">15623</span><span class="p">,</span> <span class="s2">&quot;player_name&quot;</span> <span class="p">:</span> <span class="s2">&quot;Vivianne Miedema&quot;</span><span class="p">,</span> <span class="s2">&quot;jersey_number&quot;</span> <span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="s2">&quot;player_nickname&quot;</span> <span class="p">:</span> <span class="n">null</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="s2">&quot;player_id&quot;</span> <span class="p">:</span> <span class="mi">10658</span><span class="p">,</span> <span class="s2">&quot;player_name&quot;</span> <span class="p">:</span> <span class="s2">&quot;Danielle van de Donk&quot;</span><span class="p">}</span>
+<span class="p">]</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">json_normalize</span><span class="p">(</span><span class="n">player_list</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>player_id</th>
+      <th>player_name</th>
+      <th>jersey_number</th>
+      <th>player_nickname</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>15623</td>
+      <td>Vivianne Miedema</td>
+      <td>11.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>10658</td>
+      <td>Danielle van de Donk</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Note</strong>: See how <code>player_nickname</code> when not specified also turns to <strong>NaN</strong> from <strong>None</strong>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="2.-Flattening-a-multi-level-JSON">2. Flattening a multi-level JSON<a class="anchor-link" href="#2.-Flattening-a-multi-level-JSON"> </a></h2><h3 id="A-simple-dict">A simple dict<a class="anchor-link" href="#A-simple-dict"> </a></h3>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">at_kick0ff</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;d712fb93-c464-4621-98ba-f2bdcd5641db&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span><span class="s2">&quot;00:00:00.000&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;duration&quot;</span><span class="p">:</span><span class="mf">0.0</span><span class="p">,</span>
+  <span class="s2">&quot;lineup&quot;</span><span class="p">:{</span>
+      <span class="s2">&quot;player&quot;</span><span class="p">:{</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="mi">15623</span><span class="p">,</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Vivianne Miedema&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;position&quot;</span><span class="p">:{</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="mi">23</span><span class="p">,</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Center Forward&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;jersey_number&quot;</span><span class="p">:</span><span class="mi">11</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">at_kick0ff</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>{&#39;id&#39;: &#39;d712fb93-c464-4621-98ba-f2bdcd5641db&#39;,
+ &#39;timestamp&#39;: &#39;00:00:00.000&#39;,
+ &#39;duration&#39;: 0.0,
+ &#39;lineup&#39;: {&#39;player&#39;: {&#39;id&#39;: 15623, &#39;name&#39;: &#39;Vivianne Miedema&#39;},
+  &#39;position&#39;: {&#39;id&#39;: 23, &#39;name&#39;: &#39;Center Forward&#39;},
+  &#39;jersey_number&#39;: 11}}</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">json_normalize</span><span class="p">(</span><span class="n">at_kick0ff</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>timestamp</th>
+      <th>duration</th>
+      <th>lineup.player.id</th>
+      <th>lineup.player.name</th>
+      <th>lineup.position.id</th>
+      <th>lineup.position.name</th>
+      <th>lineup.jersey_number</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>d712fb93-c464-4621-98ba-f2bdcd5641db</td>
+      <td>00:00:00.000</td>
+      <td>0.0</td>
+      <td>15623</td>
+      <td>Vivianne Miedema</td>
+      <td>23</td>
+      <td>Center Forward</td>
+      <td>11</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>You can see that <em>lineup</em> dictionary key's nested key-value pairs have been expanded into individual columns. If you feel that is unnecessary, we can restrict expansion by using <em>max_level</em> argument. With <code>max_level=1</code>, the flattening goes one level deeper.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">json_normalize</span><span class="p">(</span><span class="n">at_kick0ff</span><span class="p">,</span> <span class="n">max_level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>timestamp</th>
+      <th>duration</th>
+      <th>lineup.player</th>
+      <th>lineup.position</th>
+      <th>lineup.jersey_number</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>d712fb93-c464-4621-98ba-f2bdcd5641db</td>
+      <td>00:00:00.000</td>
+      <td>0.0</td>
+      <td>{'id': 15623, 'name': 'Vivianne Miedema'}</td>
+      <td>{'id': 23, 'name': 'Center Forward'}</td>
+      <td>11</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="A-list-of-dicts">A list of dicts<a class="anchor-link" href="#A-list-of-dicts"> </a></h3>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">first_pass</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;15758edb-58cd-49c4-a817-d2ef48ba3bcf&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span><span class="s2">&quot;00:00:00.504&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:{</span>
+      <span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="mi">30</span><span class="p">,</span>
+      <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Pass&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;play_pattern&quot;</span><span class="p">:{</span>
+      <span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="mi">9</span><span class="p">,</span>
+      <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;From Kick Off&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;player&quot;</span><span class="p">:{</span>
+      <span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="mi">15623</span><span class="p">,</span>
+      <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Vivianne Miedema&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;pass&quot;</span><span class="p">:{</span>
+      <span class="s2">&quot;recipient&quot;</span><span class="p">:{</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="mi">10666</span><span class="p">,</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Dominique Johanna Anna Bloodworth&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;length&quot;</span><span class="p">:</span><span class="mf">25.455845</span><span class="p">,</span>
+      <span class="s2">&quot;angle&quot;</span><span class="p">:</span><span class="o">-</span><span class="mf">2.3561945</span><span class="p">,</span>
+      <span class="s2">&quot;height&quot;</span><span class="p">:{</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Ground Pass&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;end_location&quot;</span><span class="p">:[</span>
+        <span class="mf">42.0</span><span class="p">,</span>
+        <span class="mf">22.0</span>
+      <span class="p">]</span>
+    <span class="p">}</span>
+  <span class="p">},</span> <span class="p">{</span>
+  <span class="s2">&quot;id&quot;</span> <span class="p">:</span> <span class="s2">&quot;ab5674a4-e824-4143-9f6f-3f1645557413&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;timestamp&quot;</span> <span class="p">:</span> <span class="s2">&quot;00:00:04.201&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;type&quot;</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;id&quot;</span> <span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
+    <span class="s2">&quot;name&quot;</span> <span class="p">:</span> <span class="s2">&quot;Pass&quot;</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;play_pattern&quot;</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;id&quot;</span> <span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
+    <span class="s2">&quot;name&quot;</span> <span class="p">:</span> <span class="s2">&quot;From Kick Off&quot;</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;player&quot;</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;id&quot;</span> <span class="p">:</span> <span class="mi">10666</span><span class="p">,</span>
+    <span class="s2">&quot;name&quot;</span> <span class="p">:</span> <span class="s2">&quot;Dominique Johanna Anna Bloodworth&quot;</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;location&quot;</span> <span class="p">:</span> <span class="p">[</span> <span class="mf">45.0</span><span class="p">,</span> <span class="mf">29.0</span> <span class="p">],</span>
+  <span class="s2">&quot;duration&quot;</span> <span class="p">:</span> <span class="mf">1.795201</span><span class="p">,</span>
+  <span class="s2">&quot;pass&quot;</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;length&quot;</span> <span class="p">:</span> <span class="mf">51.62364</span><span class="p">,</span>
+    <span class="s2">&quot;angle&quot;</span> <span class="p">:</span> <span class="mf">0.55038595</span><span class="p">,</span>
+    <span class="s2">&quot;height&quot;</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;id&quot;</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+      <span class="s2">&quot;name&quot;</span> <span class="p">:</span> <span class="s2">&quot;High Pass&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;end_location&quot;</span> <span class="p">:</span> <span class="p">[</span> <span class="mf">89.0</span><span class="p">,</span> <span class="mf">56.0</span> <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="p">]</span>
+    
+<span class="n">pd</span><span class="o">.</span><span class="n">json_normalize</span><span class="p">(</span><span class="n">first_pass</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>timestamp</th>
+      <th>type.id</th>
+      <th>type.name</th>
+      <th>play_pattern.id</th>
+      <th>play_pattern.name</th>
+      <th>player.id</th>
+      <th>player.name</th>
+      <th>pass.recipient.id</th>
+      <th>pass.recipient.name</th>
+      <th>pass.length</th>
+      <th>pass.angle</th>
+      <th>pass.height.id</th>
+      <th>pass.height.name</th>
+      <th>pass.end_location</th>
+      <th>location</th>
+      <th>duration</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>15758edb-58cd-49c4-a817-d2ef48ba3bcf</td>
+      <td>00:00:00.504</td>
+      <td>30</td>
+      <td>Pass</td>
+      <td>9</td>
+      <td>From Kick Off</td>
+      <td>15623</td>
+      <td>Vivianne Miedema</td>
+      <td>10666.0</td>
+      <td>Dominique Johanna Anna Bloodworth</td>
+      <td>25.455845</td>
+      <td>-2.356194</td>
+      <td>1</td>
+      <td>Ground Pass</td>
+      <td>[42.0, 22.0]</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>ab5674a4-e824-4143-9f6f-3f1645557413</td>
+      <td>00:00:04.201</td>
+      <td>30</td>
+      <td>Pass</td>
+      <td>9</td>
+      <td>From Kick Off</td>
+      <td>10666</td>
+      <td>Dominique Johanna Anna Bloodworth</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>51.623640</td>
+      <td>0.550386</td>
+      <td>3</td>
+      <td>High Pass</td>
+      <td>[89.0, 56.0]</td>
+      <td>[45.0, 29.0]</td>
+      <td>1.795201</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Limiting the levels...</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">json_normalize</span><span class="p">(</span><span class="n">first_pass</span><span class="p">,</span> <span class="n">max_level</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>timestamp</th>
+      <th>type</th>
+      <th>play_pattern</th>
+      <th>player</th>
+      <th>pass</th>
+      <th>location</th>
+      <th>duration</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>15758edb-58cd-49c4-a817-d2ef48ba3bcf</td>
+      <td>00:00:00.504</td>
+      <td>{'id': 30, 'name': 'Pass'}</td>
+      <td>{'id': 9, 'name': 'From Kick Off'}</td>
+      <td>{'id': 15623, 'name': 'Vivianne Miedema'}</td>
+      <td>{'recipient': {'id': 10666, 'name': 'Dominique...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>ab5674a4-e824-4143-9f6f-3f1645557413</td>
+      <td>00:00:04.201</td>
+      <td>{'id': 30, 'name': 'Pass'}</td>
+      <td>{'id': 9, 'name': 'From Kick Off'}</td>
+      <td>{'id': 10666, 'name': 'Dominique Johanna Anna ...</td>
+      <td>{'length': 51.62364, 'angle': 0.55038595, 'hei...</td>
+      <td>[45.0, 29.0]</td>
+      <td>1.795201</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="3.-Flattening-a-JSON-nested-list">3. Flattening a JSON nested list<a class="anchor-link" href="#3.-Flattening-a-JSON-nested-list"> </a></h2><h3 id="A-dict">A dict<a class="anchor-link" href="#A-dict"> </a></h3><p>For this case, let us consider a simpler example than of football event data. The key <code>info</code> has list of dictionaries inside its structure. We call it <em>nested dict</em>.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">awfc</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;team&#39;</span><span class="p">:</span> <span class="s1">&#39;AWFC&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;location&#39;</span><span class="p">:</span> <span class="s1">&#39;London&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ranking&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s1">&#39;info&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;manager&#39;</span><span class="p">:</span> <span class="s1">&#39;Joe&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;contacts&#39;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="p">{</span>
+              <span class="s1">&#39;coaching&#39;</span><span class="p">:</span> <span class="s1">&#39;joe@afc.com&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;general&#39;</span><span class="p">:</span> <span class="s1">&#39;info@afc.com&#39;</span>
+          <span class="p">},</span>
+          <span class="s1">&#39;tel&#39;</span><span class="p">:</span> <span class="s1">&#39;123456789&#39;</span><span class="p">,</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;players&#39;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Viv&#39;</span> <span class="p">},</span>
+      <span class="p">{</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;DvD&#39;</span> <span class="p">},</span>
+      <span class="p">{</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Kim&#39;</span> <span class="p">}</span>
+    <span class="p">],</span>
+<span class="p">};</span><span class="n">awfc</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>{&#39;team&#39;: &#39;AWFC&#39;,
+ &#39;location&#39;: &#39;London&#39;,
+ &#39;ranking&#39;: 1,
+ &#39;info&#39;: {&#39;manager&#39;: &#39;Joe&#39;,
+  &#39;contacts&#39;: {&#39;email&#39;: {&#39;coaching&#39;: &#39;joe@afc.com&#39;, &#39;general&#39;: &#39;info@afc.com&#39;},
+   &#39;tel&#39;: &#39;123456789&#39;}},
+ &#39;players&#39;: [{&#39;name&#39;: &#39;Viv&#39;}, {&#39;name&#39;: &#39;DvD&#39;}, {&#39;name&#39;: &#39;Kim&#39;}]}</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The <em>players</em> column has a list of dicts. So, we can flatten that column using <em>record_path</em> argument.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">json_normalize</span><span class="p">(</span><span class="n">awfc</span><span class="p">,</span> <span class="n">record_path</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;players&#39;</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Viv</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>DvD</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Kim</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>But, making a separate table with no reference id has no meaning. To prevent that we can append revelant columns to the new table using <em>meta</em> argument. Here we want their <em>team</em> and <em>Telephone number</em>. The <em>tel</em> key lies within <code>info-&gt;contacts-&gt;tel</code>. So, we need provide that path like so <code>['info', 'contacts', 'tel']</code>.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">json_normalize</span><span class="p">(</span><span class="n">awfc</span><span class="p">,</span> <span class="n">record_path</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;players&#39;</span><span class="p">],</span> <span class="n">meta</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;team&#39;</span><span class="p">,[</span><span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="s1">&#39;contacts&#39;</span><span class="p">,</span> <span class="s1">&#39;tel&#39;</span><span class="p">]])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>team</th>
+      <th>info.contacts.tel</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Viv</td>
+      <td>AWFC</td>
+      <td>123456789</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>DvD</td>
+      <td>AWFC</td>
+      <td>123456789</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Kim</td>
+      <td>AWFC</td>
+      <td>123456789</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The order in which those paths are mentioned, the order in which those columns are appended.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">json_normalize</span><span class="p">(</span><span class="n">awfc</span><span class="p">,</span> <span class="n">record_path</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;players&#39;</span><span class="p">],</span> <span class="n">meta</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;team&#39;</span><span class="p">,[</span><span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="s1">&#39;contacts&#39;</span><span class="p">,</span> <span class="s1">&#39;tel&#39;</span><span class="p">],[</span><span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="s1">&#39;manager&#39;</span><span class="p">]])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>team</th>
+      <th>info.contacts.tel</th>
+      <th>info.manager</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Viv</td>
+      <td>AWFC</td>
+      <td>123456789</td>
+      <td>Joe</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>DvD</td>
+      <td>AWFC</td>
+      <td>123456789</td>
+      <td>Joe</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Kim</td>
+      <td>AWFC</td>
+      <td>123456789</td>
+      <td>Joe</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="A-list-of-dicts">A list of dicts<a class="anchor-link" href="#A-list-of-dicts"> </a></h3>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">json_list</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span> 
+        <span class="s1">&#39;team&#39;</span><span class="p">:</span> <span class="s1">&#39;arsenal&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;colour&#39;</span><span class="p">:</span> <span class="s1">&#39;red-white&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;info&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;staff&#39;</span><span class="p">:</span> <span class="p">{</span> 
+                <span class="s1">&#39;physio&#39;</span><span class="p">:</span> <span class="s1">&#39;xxxx&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;doctor&#39;</span><span class="p">:</span> <span class="s1">&#39;yyyy&#39;</span> 
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;players&#39;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span> 
+                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Viv&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;sex&#39;</span><span class="p">:</span> <span class="s1">&#39;F&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;stats&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;goals&#39;</span><span class="p">:</span> <span class="mi">101</span><span class="p">,</span> <span class="s1">&#39;assists&#39;</span><span class="p">:</span> <span class="mi">40</span> <span class="p">}</span> 
+            <span class="p">},</span>
+            <span class="p">{</span> 
+                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Beth&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;sex&#39;</span><span class="p">:</span> <span class="s1">&#39;F&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;stats&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;goals&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span> <span class="s1">&#39;assists&#39;</span><span class="p">:</span> <span class="mi">25</span> <span class="p">}</span> 
+            <span class="p">},</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="p">{</span> 
+        <span class="s1">&#39;team&#39;</span><span class="p">:</span> <span class="s1">&#39;city&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;colour&#39;</span><span class="p">:</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;info&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;staff&#39;</span><span class="p">:</span> <span class="p">{</span> 
+                <span class="s1">&#39;physio&#39;</span><span class="p">:</span> <span class="s1">&#39;aaaa&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;doctor&#39;</span><span class="p">:</span> <span class="s1">&#39;bbbb&#39;</span> 
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;players&#39;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Steph&#39;</span><span class="p">,</span> <span class="s1">&#39;sex&#39;</span><span class="p">:</span> <span class="s1">&#39;F&#39;</span> <span class="p">},</span>
+            <span class="p">{</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Lucy&#39;</span><span class="p">,</span> <span class="s1">&#39;sex&#39;</span><span class="p">:</span> <span class="s1">&#39;F&#39;</span> <span class="p">},</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">json_normalize</span><span class="p">(</span><span class="n">json_list</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>team</th>
+      <th>colour</th>
+      <th>players</th>
+      <th>info.staff.physio</th>
+      <th>info.staff.doctor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>arsenal</td>
+      <td>red-white</td>
+      <td>[{'name': 'Viv', 'sex': 'F', 'stats': {'goals'...</td>
+      <td>xxxx</td>
+      <td>yyyy</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>city</td>
+      <td>blue</td>
+      <td>[{'name': 'Steph', 'sex': 'F'}, {'name': 'Lucy...</td>
+      <td>aaaa</td>
+      <td>bbbb</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">json_normalize</span><span class="p">(</span><span class="n">json_list</span><span class="p">,</span> <span class="n">record_path</span> <span class="o">=</span><span class="p">[</span><span class="s1">&#39;players&#39;</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>sex</th>
+      <th>stats.goals</th>
+      <th>stats.assists</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Viv</td>
+      <td>F</td>
+      <td>101.0</td>
+      <td>40.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Beth</td>
+      <td>F</td>
+      <td>60.0</td>
+      <td>25.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Steph</td>
+      <td>F</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Lucy</td>
+      <td>F</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>How about we now append the players' team, colour, and their physio.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">json_normalize</span><span class="p">(</span>
+    <span class="n">json_list</span><span class="p">,</span> 
+    <span class="n">record_path</span> <span class="o">=</span><span class="p">[</span><span class="s1">&#39;players&#39;</span><span class="p">],</span> 
+    <span class="n">meta</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;team&#39;</span><span class="p">,</span> <span class="s1">&#39;colour&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="s1">&#39;staff&#39;</span><span class="p">,</span> <span class="s1">&#39;physio&#39;</span><span class="p">]]</span>
+<span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>sex</th>
+      <th>stats.goals</th>
+      <th>stats.assists</th>
+      <th>team</th>
+      <th>colour</th>
+      <th>info.staff.physio</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Viv</td>
+      <td>F</td>
+      <td>101.0</td>
+      <td>40.0</td>
+      <td>arsenal</td>
+      <td>red-white</td>
+      <td>xxxx</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Beth</td>
+      <td>F</td>
+      <td>60.0</td>
+      <td>25.0</td>
+      <td>arsenal</td>
+      <td>red-white</td>
+      <td>xxxx</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Steph</td>
+      <td>F</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>city</td>
+      <td>blue</td>
+      <td>aaaa</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Lucy</td>
+      <td>F</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>city</td>
+      <td>blue</td>
+      <td>aaaa</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="4.-Ignoring-key-errors">4. Ignoring key errors<a class="anchor-link" href="#4.-Ignoring-key-errors"> </a></h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">json_list</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span> 
+        <span class="s1">&#39;team&#39;</span><span class="p">:</span> <span class="s1">&#39;arsenal&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;colour&#39;</span><span class="p">:</span> <span class="s1">&#39;red-white&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;info&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;staff&#39;</span><span class="p">:</span> <span class="p">{</span> 
+                <span class="s1">&#39;physio&#39;</span><span class="p">:</span> <span class="s1">&#39;xxxx&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;doctor&#39;</span><span class="p">:</span> <span class="s1">&#39;yyyy&#39;</span> 
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;players&#39;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span> 
+                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Viv&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;sex&#39;</span><span class="p">:</span> <span class="s1">&#39;F&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;stats&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;goals&#39;</span><span class="p">:</span> <span class="mi">101</span><span class="p">,</span> <span class="s1">&#39;assists&#39;</span><span class="p">:</span> <span class="mi">40</span> <span class="p">}</span> 
+            <span class="p">},</span>
+            <span class="p">{</span> 
+                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Beth&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;sex&#39;</span><span class="p">:</span> <span class="s1">&#39;F&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;stats&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;goals&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span> <span class="s1">&#39;assists&#39;</span><span class="p">:</span> <span class="mi">25</span> <span class="p">}</span> 
+            <span class="p">},</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="p">{</span> 
+        <span class="s1">&#39;team&#39;</span><span class="p">:</span> <span class="s1">&#39;city&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;colour&#39;</span><span class="p">:</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;info&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;staff&#39;</span><span class="p">:</span> <span class="p">{</span> 
+                <span class="s1">&#39;doctor&#39;</span><span class="p">:</span> <span class="s1">&#39;bbbb&#39;</span> 
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;players&#39;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Steph&#39;</span><span class="p">,</span> <span class="s1">&#39;sex&#39;</span><span class="p">:</span> <span class="s1">&#39;F&#39;</span> <span class="p">},</span>
+            <span class="p">{</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Lucy&#39;</span><span class="p">,</span> <span class="s1">&#39;sex&#39;</span><span class="p">:</span> <span class="s1">&#39;F&#39;</span> <span class="p">},</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Notice that the key <em>physio</em> is missing from the entry <code>team=city</code>. What happens if we try to access <em>physio</em> key?</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">json_normalize</span><span class="p">(</span>
+    <span class="n">json_list</span><span class="p">,</span> 
+    <span class="n">record_path</span> <span class="o">=</span><span class="p">[</span><span class="s1">&#39;players&#39;</span><span class="p">],</span> 
+    <span class="n">meta</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;team&#39;</span><span class="p">,</span> <span class="s1">&#39;colour&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="s1">&#39;staff&#39;</span><span class="p">,</span> <span class="s1">&#39;physio&#39;</span><span class="p">]],</span>
+<span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">KeyError</span>                                  Traceback (most recent call last)
+<span class="ansi-green-fg">/opt/homebrew/Caskroom/miniforge/base/envs/jupnet/lib/python3.8/site-packages/pandas/io/json/_normalize.py</span> in <span class="ansi-cyan-fg">_recursive_extract</span><span class="ansi-blue-fg">(data, path, seen_meta, level)</span>
+<span class="ansi-green-intense-fg ansi-bold">    491</span>                         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 492</span><span class="ansi-red-fg">                             </span>meta_val <span class="ansi-blue-fg">=</span> _pull_field<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">,</span> val<span class="ansi-blue-fg">[</span>level<span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    493</span>                         <span class="ansi-green-fg">except</span> KeyError <span class="ansi-green-fg">as</span> e<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">/opt/homebrew/Caskroom/miniforge/base/envs/jupnet/lib/python3.8/site-packages/pandas/io/json/_normalize.py</span> in <span class="ansi-cyan-fg">_pull_field</span><span class="ansi-blue-fg">(js, spec)</span>
+<span class="ansi-green-intense-fg ansi-bold">    387</span>             <span class="ansi-green-fg">for</span> field <span class="ansi-green-fg">in</span> spec<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 388</span><span class="ansi-red-fg">                 </span>result <span class="ansi-blue-fg">=</span> result<span class="ansi-blue-fg">[</span>field<span class="ansi-blue-fg">]</span>
+<span class="ansi-green-intense-fg ansi-bold">    389</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">KeyError</span>: &#39;physio&#39;
+
+The above exception was the direct cause of the following exception:
+
+<span class="ansi-red-fg">KeyError</span>                                  Traceback (most recent call last)
+<span class="ansi-green-fg">/var/folders/27/bh1fc62j2yq48m_4vk_tgq_80000gp/T/ipykernel_8402/2719010332.py</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> pd.json_normalize(
+</span><span class="ansi-green-intense-fg ansi-bold">      2</span>     json_list<span class="ansi-blue-fg">,</span>
+<span class="ansi-green-intense-fg ansi-bold">      3</span>     record_path <span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;players&#39;</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-green-intense-fg ansi-bold">      4</span>     meta<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;team&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;colour&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;info&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;staff&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;physio&#39;</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-green-intense-fg ansi-bold">      5</span> )
+
+<span class="ansi-green-fg">/opt/homebrew/Caskroom/miniforge/base/envs/jupnet/lib/python3.8/site-packages/pandas/io/json/_normalize.py</span> in <span class="ansi-cyan-fg">_json_normalize</span><span class="ansi-blue-fg">(data, record_path, meta, meta_prefix, record_prefix, errors, sep, max_level)</span>
+<span class="ansi-green-intense-fg ansi-bold">    502</span>                 records<span class="ansi-blue-fg">.</span>extend<span class="ansi-blue-fg">(</span>recs<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    503</span> 
+<span class="ansi-green-fg">--&gt; 504</span><span class="ansi-red-fg">     </span>_recursive_extract<span class="ansi-blue-fg">(</span>data<span class="ansi-blue-fg">,</span> record_path<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">,</span> level<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    505</span> 
+<span class="ansi-green-intense-fg ansi-bold">    506</span>     result <span class="ansi-blue-fg">=</span> DataFrame<span class="ansi-blue-fg">(</span>records<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">/opt/homebrew/Caskroom/miniforge/base/envs/jupnet/lib/python3.8/site-packages/pandas/io/json/_normalize.py</span> in <span class="ansi-cyan-fg">_recursive_extract</span><span class="ansi-blue-fg">(data, path, seen_meta, level)</span>
+<span class="ansi-green-intense-fg ansi-bold">    495</span>                                 meta_val <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>nan
+<span class="ansi-green-intense-fg ansi-bold">    496</span>                             <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 497</span><span class="ansi-red-fg">                                 raise KeyError(
+</span><span class="ansi-green-intense-fg ansi-bold">    498</span>                                     <span class="ansi-blue-fg">&#34;Try running with errors=&#39;ignore&#39; as key &#34;</span>
+<span class="ansi-green-intense-fg ansi-bold">    499</span>                                     <span class="ansi-blue-fg">f&#34;{e} is not always present&#34;</span>
+
+<span class="ansi-red-fg">KeyError</span>: &#34;Try running with errors=&#39;ignore&#39; as key &#39;physio&#39; is not always present&#34;</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>How come <code>stats.goals</code> and <code>stats.assists</code> didn't generate an error but that above does? <strong>Because, the <em>meta</em> argument expects values to be present for listed keys in meta by default.</strong> We can ignore those errors(as suggested) using <code>errors='ignore'</code></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">json_normalize</span><span class="p">(</span>
+    <span class="n">json_list</span><span class="p">,</span> 
+    <span class="n">record_path</span> <span class="o">=</span><span class="p">[</span><span class="s1">&#39;players&#39;</span><span class="p">],</span> 
+    <span class="n">meta</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;team&#39;</span><span class="p">,</span> <span class="s1">&#39;colour&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="s1">&#39;staff&#39;</span><span class="p">,</span> <span class="s1">&#39;physio&#39;</span><span class="p">]],</span>
+    <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span>
+<span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>sex</th>
+      <th>stats.goals</th>
+      <th>stats.assists</th>
+      <th>team</th>
+      <th>colour</th>
+      <th>info.staff.physio</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Viv</td>
+      <td>F</td>
+      <td>101.0</td>
+      <td>40.0</td>
+      <td>arsenal</td>
+      <td>red-white</td>
+      <td>xxxx</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Beth</td>
+      <td>F</td>
+      <td>60.0</td>
+      <td>25.0</td>
+      <td>arsenal</td>
+      <td>red-white</td>
+      <td>xxxx</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Steph</td>
+      <td>F</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>city</td>
+      <td>blue</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Lucy</td>
+      <td>F</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>city</td>
+      <td>blue</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="5.-Custom-separator-sep">5. Custom separator <code>sep</code><a class="anchor-link" href="#5.-Custom-separator-sep"> </a></h2><p>We notice that by default pandas uses <code>.</code> to indicate the direction of the path. We can change that using the <code>sep</code> argument.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">json_list</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span> 
+        <span class="s1">&#39;team&#39;</span><span class="p">:</span> <span class="s1">&#39;arsenal&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;colour&#39;</span><span class="p">:</span> <span class="s1">&#39;red-white&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;info&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;staff&#39;</span><span class="p">:</span> <span class="p">{</span> 
+                <span class="s1">&#39;physio&#39;</span><span class="p">:</span> <span class="s1">&#39;xxxx&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;doctor&#39;</span><span class="p">:</span> <span class="s1">&#39;yyyy&#39;</span> 
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;players&#39;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span> 
+                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Viv&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;sex&#39;</span><span class="p">:</span> <span class="s1">&#39;F&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;stats&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;goals&#39;</span><span class="p">:</span> <span class="mi">101</span><span class="p">,</span> <span class="s1">&#39;assists&#39;</span><span class="p">:</span> <span class="mi">40</span> <span class="p">}</span> 
+            <span class="p">},</span>
+            <span class="p">{</span> 
+                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Beth&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;sex&#39;</span><span class="p">:</span> <span class="s1">&#39;F&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;stats&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;goals&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span> <span class="s1">&#39;assists&#39;</span><span class="p">:</span> <span class="mi">25</span> <span class="p">}</span> 
+            <span class="p">},</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="p">{</span> 
+        <span class="s1">&#39;team&#39;</span><span class="p">:</span> <span class="s1">&#39;city&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;colour&#39;</span><span class="p">:</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;info&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;staff&#39;</span><span class="p">:</span> <span class="p">{</span> 
+                <span class="s1">&#39;physio&#39;</span><span class="p">:</span> <span class="s1">&#39;aaaa&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;doctor&#39;</span><span class="p">:</span> <span class="s1">&#39;bbbb&#39;</span> 
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;players&#39;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Steph&#39;</span><span class="p">,</span> <span class="s1">&#39;sex&#39;</span><span class="p">:</span> <span class="s1">&#39;F&#39;</span> <span class="p">},</span>
+            <span class="p">{</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Lucy&#39;</span><span class="p">,</span> <span class="s1">&#39;sex&#39;</span><span class="p">:</span> <span class="s1">&#39;F&#39;</span> <span class="p">},</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">json_normalize</span><span class="p">(</span>
+    <span class="n">json_list</span><span class="p">,</span> 
+    <span class="n">record_path</span> <span class="o">=</span><span class="p">[</span><span class="s1">&#39;players&#39;</span><span class="p">],</span> 
+    <span class="n">meta</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;team&#39;</span><span class="p">,</span> <span class="s1">&#39;colour&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="s1">&#39;staff&#39;</span><span class="p">,</span> <span class="s1">&#39;physio&#39;</span><span class="p">]],</span>
+    <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;-&gt;&#39;</span>
+<span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>sex</th>
+      <th>stats-&gt;goals</th>
+      <th>stats-&gt;assists</th>
+      <th>team</th>
+      <th>colour</th>
+      <th>info-&gt;staff-&gt;physio</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Viv</td>
+      <td>F</td>
+      <td>101.0</td>
+      <td>40.0</td>
+      <td>arsenal</td>
+      <td>red-white</td>
+      <td>xxxx</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Beth</td>
+      <td>F</td>
+      <td>60.0</td>
+      <td>25.0</td>
+      <td>arsenal</td>
+      <td>red-white</td>
+      <td>xxxx</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Steph</td>
+      <td>F</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>city</td>
+      <td>blue</td>
+      <td>aaaa</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Lucy</td>
+      <td>F</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>city</td>
+      <td>blue</td>
+      <td>aaaa</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="6.-Adding-context-to-record-and-meta-data-using-record_prefix-and-meta_prefix">6. Adding context to record and meta data using <em>record_prefix</em> and <em>meta_prefix</em><a class="anchor-link" href="#6.-Adding-context-to-record-and-meta-data-using-record_prefix-and-meta_prefix"> </a></h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">json_normalize</span><span class="p">(</span>
+    <span class="n">json_list</span><span class="p">,</span> 
+    <span class="n">record_path</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;players&#39;</span><span class="p">],</span> 
+    <span class="n">meta</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;team&#39;</span><span class="p">,</span> <span class="s1">&#39;colour&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="s1">&#39;staff&#39;</span><span class="p">,</span> <span class="s1">&#39;physio&#39;</span><span class="p">]],</span>
+    <span class="n">meta_prefix</span><span class="o">=</span><span class="s1">&#39;meta-&#39;</span><span class="p">,</span>
+    <span class="n">record_prefix</span><span class="o">=</span><span class="s1">&#39;player-&#39;</span><span class="p">,</span>
+    <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;-&gt;&#39;</span>
+<span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>player-name</th>
+      <th>player-sex</th>
+      <th>player-stats-&gt;goals</th>
+      <th>player-stats-&gt;assists</th>
+      <th>meta-team</th>
+      <th>meta-colour</th>
+      <th>meta-info-&gt;staff-&gt;physio</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Viv</td>
+      <td>F</td>
+      <td>101.0</td>
+      <td>40.0</td>
+      <td>arsenal</td>
+      <td>red-white</td>
+      <td>xxxx</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Beth</td>
+      <td>F</td>
+      <td>60.0</td>
+      <td>25.0</td>
+      <td>arsenal</td>
+      <td>red-white</td>
+      <td>xxxx</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Steph</td>
+      <td>F</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>city</td>
+      <td>blue</td>
+      <td>aaaa</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Lucy</td>
+      <td>F</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>city</td>
+      <td>blue</td>
+      <td>aaaa</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="7.-Working-with-a-local-file">7. Working with a local file<a class="anchor-link" href="#7.-Working-with-a-local-file"> </a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In most scenarios, we won't be making new JSON object ourselves instead use JSON formatted files. We make use python's <code>json</code> module and read the file, then use pandas' <code>json_normalize</code> to flatten it into a dataframe.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="c1"># load data using Python JSON module</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;my_attachment/movies.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    
+<span class="c1"># Normalizing data</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">json_normalize</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Title</th>
+      <th>US Gross</th>
+      <th>Worldwide Gross</th>
+      <th>US DVD Sales</th>
+      <th>Production Budget</th>
+      <th>Release Date</th>
+      <th>MPAA Rating</th>
+      <th>Running Time min</th>
+      <th>Distributor</th>
+      <th>Source</th>
+      <th>Major Genre</th>
+      <th>Creative Type</th>
+      <th>Director</th>
+      <th>Rotten Tomatoes Rating</th>
+      <th>IMDB Rating</th>
+      <th>IMDB Votes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>The Land Girls</td>
+      <td>146083</td>
+      <td>146083</td>
+      <td>NaN</td>
+      <td>8000000</td>
+      <td>Jun 12 1998</td>
+      <td>R</td>
+      <td>NaN</td>
+      <td>Gramercy</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>6.1</td>
+      <td>1071.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>First Love, Last Rites</td>
+      <td>10876</td>
+      <td>10876</td>
+      <td>NaN</td>
+      <td>300000</td>
+      <td>Aug 07 1998</td>
+      <td>R</td>
+      <td>NaN</td>
+      <td>Strand</td>
+      <td>None</td>
+      <td>Drama</td>
+      <td>None</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>6.9</td>
+      <td>207.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>I Married a Strange Person</td>
+      <td>203134</td>
+      <td>203134</td>
+      <td>NaN</td>
+      <td>250000</td>
+      <td>Aug 28 1998</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>Lionsgate</td>
+      <td>None</td>
+      <td>Comedy</td>
+      <td>None</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>6.8</td>
+      <td>865.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Four Rooms</td>
+      <td>4301000</td>
+      <td>4301000</td>
+      <td>NaN</td>
+      <td>4000000</td>
+      <td>Dec 25 1995</td>
+      <td>R</td>
+      <td>NaN</td>
+      <td>Miramax</td>
+      <td>Original Screenplay</td>
+      <td>Comedy</td>
+      <td>Contemporary Fiction</td>
+      <td>Robert Rodriguez</td>
+      <td>14.0</td>
+      <td>6.4</td>
+      <td>34328.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>The Four Seasons</td>
+      <td>42488161</td>
+      <td>42488161</td>
+      <td>NaN</td>
+      <td>6500000</td>
+      <td>May 22 1981</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>Universal</td>
+      <td>Original Screenplay</td>
+      <td>Comedy</td>
+      <td>Contemporary Fiction</td>
+      <td>Alan Alda</td>
+      <td>71.0</td>
+      <td>7.0</td>
+      <td>1814.0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>63</th>
+      <td>Big Things</td>
+      <td>0</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>50000</td>
+      <td>Dec 31 2009</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>64</th>
+      <td>Bogus</td>
+      <td>4357406</td>
+      <td>4357406</td>
+      <td>NaN</td>
+      <td>32000000</td>
+      <td>Sep 06 1996</td>
+      <td>PG</td>
+      <td>NaN</td>
+      <td>Warner Bros.</td>
+      <td>Original Screenplay</td>
+      <td>Comedy</td>
+      <td>Fantasy</td>
+      <td>Norman Jewison</td>
+      <td>40.0</td>
+      <td>4.8</td>
+      <td>2742.0</td>
+    </tr>
+    <tr>
+      <th>65</th>
+      <td>Beverly Hills Cop</td>
+      <td>234760478</td>
+      <td>316300000</td>
+      <td>NaN</td>
+      <td>15000000</td>
+      <td>Dec 05 1984</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>Paramount Pictures</td>
+      <td>Original Screenplay</td>
+      <td>Action</td>
+      <td>Contemporary Fiction</td>
+      <td>Martin Brest</td>
+      <td>83.0</td>
+      <td>7.3</td>
+      <td>45065.0</td>
+    </tr>
+    <tr>
+      <th>66</th>
+      <td>Beverly Hills Cop II</td>
+      <td>153665036</td>
+      <td>276665036</td>
+      <td>NaN</td>
+      <td>20000000</td>
+      <td>May 20 1987</td>
+      <td>R</td>
+      <td>NaN</td>
+      <td>Paramount Pictures</td>
+      <td>Original Screenplay</td>
+      <td>Action</td>
+      <td>Contemporary Fiction</td>
+      <td>Tony Scott</td>
+      <td>46.0</td>
+      <td>6.1</td>
+      <td>29712.0</td>
+    </tr>
+    <tr>
+      <th>67</th>
+      <td>Beverly Hills Cop III</td>
+      <td>42586861</td>
+      <td>119180938</td>
+      <td>NaN</td>
+      <td>50000000</td>
+      <td>May 25 1994</td>
+      <td>R</td>
+      <td>NaN</td>
+      <td>Paramount Pictures</td>
+      <td>Original Screenplay</td>
+      <td>Action</td>
+      <td>Contemporary Fiction</td>
+      <td>John Landis</td>
+      <td>10.0</td>
+      <td>5.0</td>
+      <td>21199.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>68 rows × 16 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="8.-Working-with-URL">8. Working with URL<a class="anchor-link" href="#8.-Working-with-URL"> </a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Reading a JSON file from an url needs an extra module in <code>requests</code> as any data from the Internet carries overheads that are necessary for efficient exchange of information(REST API). So, in order to read the file contents, we call upon <em>requests'</em> <code>text</code> attribute which fetches the contents of the file.</p>
+<p>Here, we use <code>json.loads</code> and not <code>json.load</code> as <code>loads</code> function expects contents(string) rather than a file pointer. If looked closely into the <code>json</code> module, the <code>load</code> calls <code>loads</code> using <code>read()</code> on the file.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">URL</span> <span class="o">=</span> <span class="s1">&#39;https://vega.github.io/vega-datasets/data/cars.json&#39;</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">URL</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">json_normalize</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Name</th>
+      <th>Miles_per_Gallon</th>
+      <th>Cylinders</th>
+      <th>Displacement</th>
+      <th>Horsepower</th>
+      <th>Weight_in_lbs</th>
+      <th>Acceleration</th>
+      <th>Year</th>
+      <th>Origin</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>chevrolet chevelle malibu</td>
+      <td>18.0</td>
+      <td>8</td>
+      <td>307.0</td>
+      <td>130.0</td>
+      <td>3504</td>
+      <td>12.0</td>
+      <td>1970-01-01</td>
+      <td>USA</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>buick skylark 320</td>
+      <td>15.0</td>
+      <td>8</td>
+      <td>350.0</td>
+      <td>165.0</td>
+      <td>3693</td>
+      <td>11.5</td>
+      <td>1970-01-01</td>
+      <td>USA</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>plymouth satellite</td>
+      <td>18.0</td>
+      <td>8</td>
+      <td>318.0</td>
+      <td>150.0</td>
+      <td>3436</td>
+      <td>11.0</td>
+      <td>1970-01-01</td>
+      <td>USA</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>amc rebel sst</td>
+      <td>16.0</td>
+      <td>8</td>
+      <td>304.0</td>
+      <td>150.0</td>
+      <td>3433</td>
+      <td>12.0</td>
+      <td>1970-01-01</td>
+      <td>USA</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>ford torino</td>
+      <td>17.0</td>
+      <td>8</td>
+      <td>302.0</td>
+      <td>140.0</td>
+      <td>3449</td>
+      <td>10.5</td>
+      <td>1970-01-01</td>
+      <td>USA</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>401</th>
+      <td>ford mustang gl</td>
+      <td>27.0</td>
+      <td>4</td>
+      <td>140.0</td>
+      <td>86.0</td>
+      <td>2790</td>
+      <td>15.6</td>
+      <td>1982-01-01</td>
+      <td>USA</td>
+    </tr>
+    <tr>
+      <th>402</th>
+      <td>vw pickup</td>
+      <td>44.0</td>
+      <td>4</td>
+      <td>97.0</td>
+      <td>52.0</td>
+      <td>2130</td>
+      <td>24.6</td>
+      <td>1982-01-01</td>
+      <td>Europe</td>
+    </tr>
+    <tr>
+      <th>403</th>
+      <td>dodge rampage</td>
+      <td>32.0</td>
+      <td>4</td>
+      <td>135.0</td>
+      <td>84.0</td>
+      <td>2295</td>
+      <td>11.6</td>
+      <td>1982-01-01</td>
+      <td>USA</td>
+    </tr>
+    <tr>
+      <th>404</th>
+      <td>ford ranger</td>
+      <td>28.0</td>
+      <td>4</td>
+      <td>120.0</td>
+      <td>79.0</td>
+      <td>2625</td>
+      <td>18.6</td>
+      <td>1982-01-01</td>
+      <td>USA</td>
+    </tr>
+    <tr>
+      <th>405</th>
+      <td>chevy s-10</td>
+      <td>31.0</td>
+      <td>4</td>
+      <td>119.0</td>
+      <td>82.0</td>
+      <td>2720</td>
+      <td>19.4</td>
+      <td>1982-01-01</td>
+      <td>USA</td>
+    </tr>
+  </tbody>
+</table>
+<p>406 rows × 9 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion"> </a></h2><p>We saw the use of <code>json_normalize</code> function in pandas library. It helps take a JSON data, flatten it, and make it as a dataframe for easier analysis.</p>
+<h2 id="References">References<a class="anchor-link" href="#References"> </a></h2><ol>
+<li>B. Chen, <a href="https://towardsdatascience.com/all-pandas-json-normalize-you-should-know-for-flattening-json-13eae1dfb7dd">https://towardsdatascience.com/all-pandas-json-normalize-you-should-know-for-flattening-json-13eae1dfb7dd</a></li>
+<li>Pandas documentation, <a href="https://pandas.pydata.org/pandas-docs/version/1.2.0/reference/api/pandas.json_normalize.html">https://pandas.pydata.org/pandas-docs/version/1.2.0/reference/api/pandas.json_normalize.html</a></li>
+</ol>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="dr563105/blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/blog/pandas/json/jupyter/2021/09/24/using-json-normalize.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>A Data Science Blog</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/dr563105" title="dr563105"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://stackoverflow.com/users/13539744" title="13539744"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#stackoverflow"></use></svg></a></li><li><a rel="me" href="https://www.linkedin.com/in/deepakr05" title="deepakr05"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#linkedin"></use></svg></a></li><li><a rel="me" href="https://twitter.com/thosegradients" title="thosegradients"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
