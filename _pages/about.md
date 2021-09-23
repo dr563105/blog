@@ -32,11 +32,11 @@ I hope to publish a few here as posts in the next weeks.
 At the moment I'm learning about *tracking data* and participating in the [NFL Health &
 Safety](https://www.kaggle.com/c/nfl-health-and-safety-helmet-assignment/overview) kaggle competition.
 
-Due to Covid, I had to return to India. I'm actively looking for job opportunities in
-Western/Northern Europe. I'm open to relocation and if the situation necessitates I'm
+Due to Covid, I had to return to India. I am seeking full time employment starting immediately as a data scientist,
+data analyst, or machine learning engineer preferably in Europe.  I'm open to relocation and if the situation necessitates I'm
 happy to work remotely.
 
-I'd like to hear from you. I can happily give you my resume upon request.
+If you have interest in seeing my resume please contact me.
 
 Und ich kann gerne auf Deutsch mit dir reden. Bitte schreib mir!
 
