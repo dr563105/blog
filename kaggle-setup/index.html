@@ -110,7 +110,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      1 min read
+      2 min read
     
 </span></p>
 
@@ -200,10 +200,19 @@ On Unix-based systems you can do this with the following command:
     <div class="language-shell highlighter-rouge">
 <div class="highlight"><pre class="highlight"><code><span class="nv">$python</span>
 import kaggle
-kaggle competitions list
 </code></pre></div>    </div>
-    <p>If installed properly, the command will list all the entered competitions.</p>
+    <p>Importing kaggle shouldn’t return an error. If there is error, check whether you’re in the
+right env where kaggle is installed.</p>
   </li>
+</ol>
+
+<p>If no error, exit the shell and type the following command in the terminal.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kaggle competitions list
+</code></pre></div></div>
+
+<p>If installed properly, the command will list all the entered competitions.</p>
+<ol>
   <li>If not, the binary path may be incorrect. Usually it is installed in <code class="language-plaintext highlighter-rouge">~/.local/bin</code>
 Try using
     <div class="language-shell highlighter-rouge">
@@ -220,6 +229,12 @@ so that you might use just <code class="language-plaintext highlighter-rouge">ka
 <p>It is time to use the Kaggle API. For example, to see what dataset command offers, in the CLI enter</p>
 <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kaggle dataset <span class="nt">--help</span>
 </code></pre></div></div>
+
+<blockquote>
+  <p><strong>Tip</strong>: Remember to comply with competition’s terms and conditions before downloading
+the dataset. You will get an error <code class="language-plaintext highlighter-rouge">forbidden</code> if you try to download before agreeing.</p>
+</blockquote>
+
 <p>For more info on the API, Kaggle’s <a href="https://github.com/Kaggle/kaggle-api#commands">github</a> page is an excellent resource.</p>
 
 
