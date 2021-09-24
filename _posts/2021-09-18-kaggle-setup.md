@@ -58,8 +58,16 @@ chmod 600 ~/.kaggle/kaggle.json
 ```shell
 $python
 import kaggle
+```
+Importing kaggle shouldn't return an error. If there is error, check whether you're in the
+right env where kaggle is installed.
+
+If no error, exit the shell and type the following command in the terminal.
+
+```shell
 kaggle competitions list
 ```
+
 If installed properly, the command will list all the entered competitions.
 1. If not, the binary path may be incorrect. Usually it is installed in `~/.local/bin`
 Try using
@@ -75,5 +83,9 @@ It is time to use the Kaggle API. For example, to see what dataset command offer
 ```shell
 kaggle dataset --help
 ```
+
+> **Tip**: Remember to comply with competition's terms and conditions before downloading
+> the dataset. You will get an error `forbidden` if you try to download before agreeing.
+
 For more info on the API, Kaggle's [github](https://github.com/Kaggle/kaggle-api#commands) page is an excellent resource.
 
