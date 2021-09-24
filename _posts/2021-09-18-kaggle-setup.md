@@ -57,7 +57,7 @@ chmod 600 ~/.kaggle/kaggle.json
 1. Run:
 ```shell
 $python
-import kaggle
+>>>import kaggle
 ```
 Importing kaggle shouldn't return an error. If there is error, check whether you're in the
 right env where kaggle is installed.
