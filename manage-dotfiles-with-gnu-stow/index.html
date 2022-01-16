@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Manage dotfiles with GNU Stow | Deepak Ramani</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Manage dotfiles with GNU Stow" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A guide to manage all the dotfiles." />
+<meta property="og:description" content="A guide to manage all the dotfiles." />
+<link rel="canonical" href="https://dr563105.github.io/blog/manage-dotfiles-with-gnu-stow/" />
+<meta property="og:url" content="https://dr563105.github.io/blog/manage-dotfiles-with-gnu-stow/" />
+<meta property="og:site_name" content="Deepak Ramani" />
+<meta property="og:image" content="https://dr563105.github.io/blog/images/The_GNU_logo.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-01-09T00:00:00-06:00" />
+<script type="application/ld+json">
+{"url":"https://dr563105.github.io/blog/manage-dotfiles-with-gnu-stow/","@type":"BlogPosting","headline":"Manage dotfiles with GNU Stow","dateModified":"2022-01-09T00:00:00-06:00","datePublished":"2022-01-09T00:00:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://dr563105.github.io/blog/manage-dotfiles-with-gnu-stow/"},"image":"https://dr563105.github.io/blog/images/The_GNU_logo.png","description":"A guide to manage all the dotfiles.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://dr563105.github.io/blog/feed.xml" title="Deepak Ramani" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-207674206-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-207674206-1');
+</script>
+
+
+<link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/blog/">Deepak Ramani</a><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewBox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.16,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              </svg>
+            </span>
+          </label>
+  
+          <div class="trigger">
+            <a class="page-link" href="https://github.com/dr563105/blog"><svg class="octicon octicon-mark-github octicon octicon-mark-github octicon octicon-mark-github octicon octicon-mark-github" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg></a><a class="page-link" href="/blog/about-me/">About Deepak</a><a class="page-link" href="/blog/search/">Search</a><a class="page-link" href="/blog/categories/">Tags</a></div>
+        </nav></div>
+  </header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Manage dotfiles with GNU Stow</h1><p class="page-description">A guide to manage all the dotfiles.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2022-01-09T00:00:00-06:00" itemprop="datePublished">
+        Jan 9, 2022
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      4 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/blog/categories/#dotfiles">dotfiles</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#GNU stow">GNU stow</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#general">general</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h2"><a href="#what-are-dotfiles">What are dotfiles?</a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#things-to-know">Things to know</a></li>
+<li class="toc-entry toc-h3"><a href="#common-config-files-that-need-storing">Common config files that need storing</a></li>
+<li class="toc-entry toc-h3"><a href="#where-are-most-required-dotfiles-located">Where are most required dotfiles located?</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#gnu-stow">GNU Stow</a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#install-stow">Install Stow</a></li>
+<li class="toc-entry toc-h3"><a href="#placing-the-files">Placing the files</a></li>
+<li class="toc-entry toc-h3"><a href="#useful-stow-commands">Useful Stow commands</a></li>
+<li class="toc-entry toc-h3"><a href="#activating-stow">Activating Stow</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#storing-files-in-git">Storing files in Git</a></li>
+</ul><p>In this post, I will try to guide in organise your dotfiles in the cloud and manage them
+using GNU Stow.</p>
+
+<h2 id="what-are-dotfiles">
+<a class="anchor" href="#what-are-dotfiles" aria-hidden="true"><span class="octicon octicon-link"></span></a>What are dotfiles?</h2>
+<p>For a casual user, the term <em>dotfiles</em> may sound strange and confusing but it is nothing
+but application(app) configuration files in <em>developer</em> talk. The apps generally refer to
+certain files to configure itself.</p>
+
+<p>People usually store these files in a remote location such as a Github repository and
+retrieve them when needed.</p>
+
+<p>Dotfiles allow personalisation and restoring them in a new machine saves a lot of time. 
+Preparing and organising the dotfiles with some initial effort, help developers save a lot of <strong>time</strong> later.</p>
+
+<p>A few examples of dotfiles are <em>.bashrc</em>, <em>.vimrc</em>, <em>.gitignore</em>.</p>
+
+<div class="Toast Toast--warning googoo">
+   <span class="Toast-icon"><svg class="octicon octicon-alert" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.22 1.754a.25.25 0 00-.44 0L1.698 13.132a.25.25 0 00.22.368h12.164a.25.25 0 00.22-.368L8.22 1.754zm-1.763-.707c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0114.082 15H1.918a1.75 1.75 0 01-1.543-2.575L6.457 1.047zM9 11a1 1 0 11-2 0 1 1 0 012 0zm-.25-5.25a.75.75 0 00-1.5 0v2.5a.75.75 0 001.5 0v-2.5z"></path></svg></span>
+   <span class="Toast-content">Warning: Pay attention to personal information inside these
+files. Never store secure keys, passwords in public domains.</span>
+</div>
+
+<h3 id="things-to-know">
+<a class="anchor" href="#things-to-know" aria-hidden="true"><span class="octicon octicon-link"></span></a>Things to know</h3>
+<ul>
+  <li>Which app’s config files need to stored.</li>
+  <li>Where do those config files are located.</li>
+</ul>
+
+<h3 id="common-config-files-that-need-storing">
+<a class="anchor" href="#common-config-files-that-need-storing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Common config files that need storing</h3>
+<ul>
+  <li>
+<code class="language-plaintext highlighter-rouge">.bashrc</code> or <code class="language-plaintext highlighter-rouge">.zshrc</code>
+</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">.vimrc</code> or <code class="language-plaintext highlighter-rouge">init.vim</code>(in the case of neovim)</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">.gitignore_global</code> and <code class="language-plaintext highlighter-rouge">.gitconfig</code> i</li>
+  <li>Terminal emulator config files</li>
+  <li>IDE of choice config files</li>
+</ul>
+
+<p>In fact, if there is an app that you have configured heavily and frequently use, its
+config files must be stored. In the case the said app doesn’t allow exporting of
+configurations, it is highly recommended to move to one that allows it.</p>
+
+<h3 id="where-are-most-required-dotfiles-located">
+<a class="anchor" href="#where-are-most-required-dotfiles-located" aria-hidden="true"><span class="octicon octicon-link"></span></a>Where are most required dotfiles located?</h3>
+<p>Most files are present in <code class="language-plaintext highlighter-rouge">$HOME</code> or <code class="language-plaintext highlighter-rouge">$XDG_CONFIG_HOME</code> directories. <code class="language-plaintext highlighter-rouge">$XDG_CONFIG_HOME</code> 
+defines the base directory relative to which user-specific configuration files 
+should be stored. If <code class="language-plaintext highlighter-rouge">$XDG_CONFIG_HOME</code> is either not set or empty, 
+a default equal to <code class="language-plaintext highlighter-rouge">$HOME/.config</code> should be used.</p>
+
+<h2 id="gnu-stow">
+<a class="anchor" href="#gnu-stow" aria-hidden="true"><span class="octicon octicon-link"></span></a>GNU Stow</h2>
+<p>Some prominent results when googled for storing dotfiles are <a href="https://www.atlassian.com/git/tutorials/dotfiles">this Atlassian tutorial</a> 
+and using <a href="https://yadm.io/"><em>yadm</em></a>. However, I found those harder to start using.</p>
+
+<p><a href="https://www.gnu.org/software/stow/">GNU Stow</a> on the other hand is an easy to use symlink
+farm manager. As described in their website, it takes distinct packages of software and/or data 
+located in separate directories on the filesystem, and makes them appear to be installed in the same place.</p>
+
+<p>This strategy works brilliantly for dotfiles. Borrowing explanation from <a href="http://brandon.invergo.net/news/2012-05-26-using-gnu-stow-to-manage-your-dotfiles.html">Brandon Invergo’s article</a>:</p>
+<blockquote>
+  <p>The procedure is simple. I created the <code class="language-plaintext highlighter-rouge">${HOME}/dotfiles</code> directory and then inside it I made subdirectories for all the programs whose configurations I wanted to manage. Inside each of those directories, I moved in all the appropriate files, maintaining the directory 
+structure of my home directory. So, if a file normally resides at the top level of your home directory, it would go into the top level of the program’s subdirectory. If a file
+normally goes in the default <code class="language-plaintext highlighter-rouge">${XDG_CONFIG_HOME}/${PKGNAME}</code> location <code class="language-plaintext highlighter-rouge">(${HOME}/.config/${PKGNAME})</code>, then it would instead go in
+<code class="language-plaintext highlighter-rouge">${HOME}/dotfiles/${PKGNAME}/.config/${PKGNAME}</code> and so on.</p>
+</blockquote>
+
+<h3 id="install-stow">
+<a class="anchor" href="#install-stow" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install Stow</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt stow <span class="c"># Ubuntu</span>
+
+brew <span class="nb">install </span>stow <span class="c"># Homebrew Mac</span>
+</code></pre></div></div>
+<h3 id="placing-the-files">
+<a class="anchor" href="#placing-the-files" aria-hidden="true"><span class="octicon octicon-link"></span></a>Placing the files</h3>
+<p>Now, it might look complex at first. Let me explain with some examples.</p>
+<ul>
+  <li>
+<code class="language-plaintext highlighter-rouge">.bashrc</code> or <code class="language-plaintext highlighter-rouge">.zshrc</code> are present/needed in <code class="language-plaintext highlighter-rouge">$HOME</code> directory, so inside <code class="language-plaintext highlighter-rouge">$HOME/dotfiles</code>
+create a subdirectory with <code class="language-plaintext highlighter-rouge">bashrc</code> or <code class="language-plaintext highlighter-rouge">zshrc</code> and place the original <code class="language-plaintext highlighter-rouge">.bashrc</code> or
+<code class="language-plaintext highlighter-rouge">.zshrc</code> file appropriately inside their folder. GNU Stow understands that the dotfile,
+when symlinked, will create a symlink-copy in the <code class="language-plaintext highlighter-rouge">$HOME</code> directory. For future
+modifications, file in either locations can be edited. But for simplicity, use
+<code class="language-plaintext highlighter-rouge">$HOME/dotfiles</code> directory.</li>
+  <li>A complicated example would be a config file located deep inside subfolders: nvim’s or
+neovim’s <code class="language-plaintext highlighter-rouge">init.vim</code> or <code class="language-plaintext highlighter-rouge">init.lua</code> file. It is present in <code class="language-plaintext highlighter-rouge">$HOME/.config/nvim/init.vim</code>.
+For Stow to understand, it must be placed like this –
+<code class="language-plaintext highlighter-rouge">$HOME/dotfiles/nvim/.config/nvim/init.vim</code>
+</li>
+</ul>
+
+<p>For further reading, I recommend brilliantly written Jake Weisler’s <a href="https://www.jakewiesler.com/blog/managing-dotfiles#understanding-stow">post</a> on GNU Stow.</p>
+
+<h3 id="useful-stow-commands">
+<a class="anchor" href="#useful-stow-commands" aria-hidden="true"><span class="octicon octicon-link"></span></a>Useful Stow commands</h3>
+
+<p>If correctly installed, then running the command <code class="language-plaintext highlighter-rouge">stow --help</code> should list options to use
+Stow. Most used commands are</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>stow &lt;packagename&gt; <span class="c"># activates symlink</span>
+stow <span class="nt">-n</span> &lt;packagename&gt; <span class="c"># trial runs or simulates symlink generation. Effective for checking for errors</span>
+stow <span class="nt">-D</span> &lt;packagename&gt; <span class="c"># delete stowed package</span>
+stow <span class="nt">-R</span> &lt;packagename&gt; <span class="c"># restows package</span>
+</code></pre></div></div>
+
+<h3 id="activating-stow">
+<a class="anchor" href="#activating-stow" aria-hidden="true"><span class="octicon octicon-link"></span></a>Activating Stow</h3>
+<p>So if we have created three subdirectories inside dotfiles say <code class="language-plaintext highlighter-rouge">zsh</code>, <code class="language-plaintext highlighter-rouge">git</code>, <code class="language-plaintext highlighter-rouge">nvim</code>, then</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>stow bash git nvim
+</code></pre></div></div>
+<p>will activate their symlinks.</p>
+
+<p>If returned to <code class="language-plaintext highlighter-rouge">$HOME</code> and <code class="language-plaintext highlighter-rouge">$XDG_CONFIG_HOME</code> and verified, then we will see,</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.gitconfig -&gt; .dotfiles/git/.gitconfig
+.zshrc -&gt; .dotfiles/zsh/.zshrc
+nvim -&gt; ../.dotfiles/nvim/.config/nvim
+</code></pre></div></div>
+<p>The most awesome thing in all this is, the directory structure needs to be created only
+once. For future requirement, one simply clones the dotfiles directory and activates
+symlinks.</p>
+
+<h2 id="storing-files-in-git">
+<a class="anchor" href="#storing-files-in-git" aria-hidden="true"><span class="octicon octicon-link"></span></a>Storing files in Git</h2>
+<p>The dotfiles directory now becomes important to store in a remote location for safe
+keeping. Usually a git repository is the preferred method. For instructions on how to use
+git, look up various tutorials on Git in the internet.</p>
+
+<p>In summary, I have written a short, albeit technical write up on GNU Stow and its uses for
+storing dotfiles.
+Feel free to ask questions in the comments or via various means linked in the blog.</p>
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="dr563105/blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/blog/manage-dotfiles-with-gnu-stow/" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>A Data Science Blog</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/dr563105" target="_blank" title="dr563105"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://stackoverflow.com/users/13539744" target="_blank" title="13539744"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#stackoverflow"></use></svg></a></li><li><a rel="me" href="https://www.linkedin.com/in/deepakr05" target="_blank" title="deepakr05"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#linkedin"></use></svg></a></li><li><a rel="me" href="https://twitter.com/thosegradients" target="_blank" title="thosegradients"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
