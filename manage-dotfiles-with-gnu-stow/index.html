@@ -123,7 +123,7 @@ window.onload = wrap_img;
         <a class="category-tags-link" href="/blog/categories/#GNU stow">GNU stow</a>
         &nbsp;
       
-        <a class="category-tags-link" href="/blog/categories/#general">general</a>
+        <a class="category-tags-link" href="/blog/categories/#setup-dev-env">setup-dev-env</a>
         
       
       </p>
@@ -161,7 +161,7 @@ certain files to configure itself.</p>
 <p>People usually store these files in a remote location such as a Github repository and
 retrieve them when needed.</p>
 
-<p>Dotfiles allow personalisation and restoring them in a new machine saves a lot of time. 
+<p>Dotfiles allow personalisation. They can be restored in a new machine saving time. 
 Preparing and organising the dotfiles with some initial effort, help developers save a lot of <strong>time</strong> later.</p>
 
 <p>A few examples of dotfiles are <em>.bashrc</em>, <em>.vimrc</em>, <em>.gitignore</em>.</p>
@@ -195,7 +195,7 @@ files. Never store secure keys, passwords in public domains.</span>
 
 <p>In fact, if there is an app that you have configured heavily and frequently use, its
 config files must be stored. In the case the said app doesn’t allow exporting of
-configurations, it is highly recommended to move to one that allows it.</p>
+configurations, it is highly recommended to move onto one that allows it.</p>
 
 <h3 id="where-are-most-required-dotfiles-located">
 <a class="anchor" href="#where-are-most-required-dotfiles-located" aria-hidden="true"><span class="octicon octicon-link"></span></a>Where are most required dotfiles located?</h3>
@@ -228,6 +228,7 @@ normally goes in the default <code class="language-plaintext highlighter-rouge">
 
 brew <span class="nb">install </span>stow <span class="c"># Homebrew Mac</span>
 </code></pre></div></div>
+
 <h3 id="placing-the-files">
 <a class="anchor" href="#placing-the-files" aria-hidden="true"><span class="octicon octicon-link"></span></a>Placing the files</h3>
 <p>Now, it might look complex at first. Let me explain with some examples.</p>
@@ -253,6 +254,7 @@ For Stow to understand, it must be placed like this –
 
 <p>If correctly installed, then running the command <code class="language-plaintext highlighter-rouge">stow --help</code> should list options to use
 Stow. Most used commands are</p>
+
 <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>stow &lt;packagename&gt; <span class="c"># activates symlink</span>
 stow <span class="nt">-n</span> &lt;packagename&gt; <span class="c"># trial runs or simulates symlink generation. Effective for checking for errors</span>
 stow <span class="nt">-D</span> &lt;packagename&gt; <span class="c"># delete stowed package</span>
@@ -265,6 +267,7 @@ stow <span class="nt">-R</span> &lt;packagename&gt; <span class="c"># restows pa
 
 <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>stow bash git nvim
 </code></pre></div></div>
+
 <p>will activate their symlinks.</p>
 
 <p>If returned to <code class="language-plaintext highlighter-rouge">$HOME</code> and <code class="language-plaintext highlighter-rouge">$XDG_CONFIG_HOME</code> and verified, then we will see,</p>
@@ -273,6 +276,7 @@ stow <span class="nt">-R</span> &lt;packagename&gt; <span class="c"># restows pa
 .zshrc -&gt; .dotfiles/zsh/.zshrc
 nvim -&gt; ../.dotfiles/nvim/.config/nvim
 </code></pre></div></div>
+
 <p>The most awesome thing in all this is, the directory structure needs to be created only
 once. For future requirement, one simply clones the dotfiles directory and activates
 symlinks.</p>
@@ -283,7 +287,7 @@ symlinks.</p>
 keeping. Usually a git repository is the preferred method. For instructions on how to use
 git, look up various tutorials on Git in the internet.</p>
 
-<p>In summary, I have written a short, albeit technical write up on GNU Stow and its uses for
+<p>In summary, I have written a short, albeit technical write up on GNU Stow, and its uses for
 storing dotfiles.
 Feel free to ask questions in the comments or via various means linked in the blog.</p>
 
