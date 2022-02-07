@@ -27,7 +27,7 @@ Publishing a blog post is nothing but committing and pushing to the remote repo 
 any git push. After pushing, *Github Actions* takes control and runs its predefined
 workflow. This process lasts for about 5-10 minutes. After which the posts will go live. 
 
-### References 
+## References 
 
 Use the following links to refer while making blog posts.
 
