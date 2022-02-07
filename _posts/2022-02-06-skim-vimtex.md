@@ -5,7 +5,7 @@ image: images/neovim-logo.png
 comments: true
 permalink: /skim-vimtex-setup/
 description: A short post to setup Skim pdf reader with Vimtex plugin in Mac OS.  
-categories: [skim, vimtex, neovim, vim, mac]
+categories: [skim, vimtex, neovim, vim, mac, inverse search, backward search]
 title: Setup Skim PDF reader with VimTeX in Mac OS
 ---
 [VimTeX](https://github.com/lervag/vimtex) plugin written by Karl Yngve Lervåg is one of the goto plugins to manage
