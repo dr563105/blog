@@ -29,14 +29,16 @@ I'm interested in bringing the power of machine learning to fields such as sport
 how much impact it could have. Presently, I analyse *event data* from soccer after weekend matches.
 I hope to publish a few here as posts in the next weeks.
 
-At the moment I'm learning about *tracking data* and participating in the [NFL Health &
-Safety](https://www.kaggle.com/c/nfl-health-and-safety-helmet-assignment/overview) kaggle competition.
+At the moment I'm learning about *tracking data* through [Laurie Shaw's lecture](https://www.youtube.com/watch?v=8TrleFklEsE)
+and exploring NFL's Big Bowl 2022 in [Kaggle](https://www.kaggle.com/c/nfl-big-data-bowl-2022).  
 
-Due to Covid, I had to return to India. I am seeking full time employment starting immediately as a data scientist,
-data analyst, or machine learning engineer preferably in Europe.  I'm open to relocation and if the situation necessitates I'm
-happy to work remotely.
+Also I'm spending time learning about Algotrading, TimescaleDB, interacting with various
+APIs, data munging etc. I intend to blog about them as I make progress.
 
-If you have interest in seeing my resume please contact me.
+I'm open to full-time employment either remote or on-site. I'd be interested in Data
+Analyst, Data Scientist, ML engineer, or Robotics engineer roles.
+
+If you have interest in seeing my resume, please contact me.
 
 Und ich kann gerne auf Deutsch mit dir reden. Bitte schreib mir!
 
