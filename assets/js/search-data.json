@@ -86,7 +86,10 @@
   
 
   
-      ,"page8": {
+  
+
+  
+      ,"page9": {
           "title": "",
           "content": "Sitemap: {{ “sitemap.xml” | absolute_url }} | .",
           "url": "https://dr563105.github.io/blog/robots.txt",
