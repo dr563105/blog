@@ -32,3 +32,5 @@ If you have interest in seeing my resume, please contact me.
 
 Und ich kann gerne auf Deutsch mit dir reden. Bitte schreib mir!
 
+
+If you find my blog posts useful, please consider supporting [me](https://www.buymeacoffee.com/dr563105)(buymeacoffee link).
