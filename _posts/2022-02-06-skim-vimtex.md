@@ -52,12 +52,11 @@ We require the following lines to make VimTeX talk to Skim within neovim. This d
 communication, is known as *forward search*. 
 
 ```shell
-let g:tex_flavor='latex' # Default tex file format
 let g:vimtex_view_method = 'skim' # Choose which program to use to view PDF file 
 let g:vimtex_view_skim_sync = 1 # Value 1 allows forward search after every successful compilation
 let g:vimtex_view_skim_activate = 1 # Value 1 allows change focus to skim after command `:VimtexView` is given
-
 ```
+
 The forward search allows any change made in the TeX file automatically refreshes Skim to
 reflect those changes in PDF. One of the other common uses is cursor sync between the TeX file and PDF. 
 Setting `let g:vimtex_view_skim_sync` allows placing the cursor in some position in the Tex file sync with the same
